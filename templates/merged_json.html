@@ -390,24 +390,29 @@
             const downloadButtons = document.querySelectorAll('.download-button');
             
             function checkFileCompleteness(file) {
-                const fileInputs = Array.from(document.querySelectorAll(`.radio-input[data-file="${file}"]`));
-                return fileInputs.every(input => {
-                    const name = input.getAttribute('name');
-                    return document.querySelector(`input[name="${name}"]:checked`);
-                });
+                const fileInputs = Array.from(document.querySelectorAll(`input[type="radio"][name^="file_${file}"]`));
+                const groupNames = new Set();
+                fileInputs.forEach(input => groupNames.add(input.name));
+                
+                return Array.from(groupNames).every(name => 
+                    document.querySelector(`input[name="${name}"]:checked`)
+                );
             }
             
             function updateButtons() {
                 downloadButtons.forEach(button => {
                     const file = button.getAttribute('data-file');
                     const fileComplete = checkFileCompleteness(file);
-                    button.classList.toggle('disabled', !fileComplete);
-                    const validationMessage = button.parentElement.querySelector('.validation-message');
-                    validationMessage.style.display = fileComplete ? 'none' : 'block';
                     
                     if (fileComplete) {
-                        button.onclick = (e) => handleDownload(e, file);
+                        button.disabled = false;
+                        button.style.backgroundColor = '#2196F3';
+                        button.style.cursor = 'pointer';
+                        button.onclick = () => handleDownload(file);
                     } else {
+                        button.disabled = true;
+                        button.style.backgroundColor = '#ccc';
+                        button.style.cursor = 'not-allowed';
                         button.onclick = () => false;
                     }
                 });
