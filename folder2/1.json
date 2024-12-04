@@ -1,0 +1,9 @@
+{
+    "first_name": "Jay",
+    "last_name": "Doe",
+    "dob": "1990-01-01",
+    "email": "john.doe@example.com",
+    "gender": "Female",
+    "ssn": "123-45-6781",
+    "race": "Black"
+}
